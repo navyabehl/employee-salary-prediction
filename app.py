@@ -91,7 +91,7 @@ st.caption(f"Dataset shape: {df.shape[0]} rows × {df.shape[1]} columns")
 # ── Step 2: Model Evaluation ──────────────────────────────────────────────────
 st.subheader("Step 2: Model Evaluation")
 metrics_df = pd.DataFrame(model_results).T.drop(columns='Model')
-st.dataframe(metrics_df, use_container_width=True)
+st.dataframe(metrics_df, width='stretch')
 
 # ── Step 3: Visual Analysis ───────────────────────────────────────────────────
 st.subheader("Step 3: Visual Analysis")
@@ -103,7 +103,7 @@ with col1:
     fig, ax = plt.subplots()
     gender_labels = df.copy()
     gender_labels['Gender'] = gender_labels['Gender'].map(dict(enumerate(le.classes_)))
-    sns.countplot(x='Gender', data=gender_labels, ax=ax, palette='pastel')
+    sns.countplot(x='Gender', data=gender_labels, ax=ax, hue='Gender', palette='pastel', legend=False)
     st.pyplot(fig)
 
 with col2:
@@ -113,8 +113,8 @@ with col2:
     edu_labels['Education Level'] = edu_labels['Education Level'].map(
         {v: k for k, v in edu_mapping.items()}
     )
-    sns.countplot(x='Education Level', data=edu_labels, ax=ax, palette='pastel',
-                  order=["High School", "Bachelor's", "Master's", "PhD"])
+    sns.countplot(x='Education Level', data=edu_labels, ax=ax, hue='Education Level',
+              palette='pastel', legend=False, order=["High School", "Bachelor's", "Master's", "PhD"])
     st.pyplot(fig)
 
 st.write("### Top 10 Highest Paying Job Titles")
@@ -172,30 +172,34 @@ if predict_btn:
     for i, (name, result) in enumerate(model_results.items()):
         pred_salary = result['Model'].predict(input_df)[0]
         cols[i].metric(label=name, value=f"${pred_salary:,.0f}")
+        
+    # ── GenAI Explanation ─────────────────────────────────────────────────────
+    st.write("### 🤖 AI Explanation")
+
+    best_model_name = max(model_results, key=lambda x: model_results[x]['R² Score'])
+    best_pred = model_results[best_model_name]['Model'].predict(input_df)[0]
+
+    prompt = f"""
+    A salary prediction model estimated a salary of {best_pred:,.0f} for an employee with:
+    - Age: {age}
+    - Gender: {gender}
+    - Education: {education}
+    - Years of Experience: {experience}
+    - Job Title: {job_input}
+
+    In 3-4 sentences, explain in plain English why this salary makes sense.
+    Reference which factors (experience, education, job title) likely drove this result
+    and how it compares to typical market compensation. Be professional and concise.
+    """
+
+    with st.spinner("Generating explanation..."):
+        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+        gemini = genai.GenerativeModel("gemini-1.5-flash")
+        response = gemini.generate_content(prompt)
+        st.info(response.text)
 
 
-# ── GenAI Explanation ─────────────────────────────────────────────────────────
-st.write("### 🤖 AI Explanation")
 
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-gemini = genai.GenerativeModel("gemini-1.5-flash")
-
-prompt = f"""
-A salary prediction model estimated a salary of ${best_pred:,.0f} for an employee with:
-- Age: {age}
-- Gender: {gender}
-- Education: {education}
-- Years of Experience: {experience}
-- Job Title: {job_input}
-
-In 3-4 sentences, explain in plain English why this salary makes sense.
-Reference which factors (experience, education, job title) likely drove this result
-and how it compares to typical market compensation. Be professional and concise.
-"""
-
-with st.spinner("Generating explanation..."):
-    response = gemini.generate_content(prompt)
-    st.info(response.text)
 
 
 
