@@ -172,7 +172,6 @@ if predict_btn:
     for i, (name, result) in enumerate(model_results.items()):
         pred_salary = result['Model'].predict(input_df)[0]
         cols[i].metric(label=name, value=f"${pred_salary:,.0f}")
-        
     # ── GenAI Explanation ─────────────────────────────────────────────────────
     st.write("### 🤖 AI Explanation")
 
@@ -194,10 +193,15 @@ if predict_btn:
 
     with st.spinner("Generating explanation..."):
         try:
-            response = gemini.generate_content(prompt)
-            st.info(response.text)
+            from groq import Groq
+            client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+            response = client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            st.info(response.choices[0].message.content)
         except Exception as e:
-            st.warning("⚠️ AI explanation unavailable right now — free tier limit reached. Please wait a minute and try again.")
+            st.warning("⚠️ AI explanation unavailable right now. Please try again in a moment.")
 
 
 
