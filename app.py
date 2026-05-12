@@ -193,10 +193,11 @@ if predict_btn:
     """
 
     with st.spinner("Generating explanation..."):
-        genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-        gemini = genai.GenerativeModel("gemini-2.0-flash")
+    try:
         response = gemini.generate_content(prompt)
         st.info(response.text)
+    except Exception as e:
+        st.warning("⚠️ AI explanation unavailable right now — free tier limit reached. Please wait a minute and try again.")
 
 
 
