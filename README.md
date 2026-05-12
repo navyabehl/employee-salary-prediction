@@ -68,7 +68,7 @@ employee-salary-prediction-ml/
 |---|---|---|---|
 | Linear Regression | ~0.89 | 15,753.36 | 21,824.99 |
 | Decision Tree | ~0.94 | 7,646.74 | 12,940.26 |
-| **Random Forest** | **0.97** | **3,430.20** | **8,990.93** |
+| **Random Forest** | **~0.97** | **3,430.20** | **8,990.93** |
 
 > Random Forest was selected as the primary prediction model due to its superior accuracy and robustness to overfitting.
 
