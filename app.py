@@ -194,7 +194,7 @@ if predict_btn:
 
     with st.spinner("Generating explanation..."):
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-        gemini = genai.GenerativeModel("gemini-1.5-flash")
+        gemini = genai.GenerativeModel("gemini-2.0-flash")
         response = gemini.generate_content(prompt)
         st.info(response.text)
 
