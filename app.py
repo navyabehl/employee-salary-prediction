@@ -5,12 +5,14 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import google.generativeai as genai
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error
+
 
 st.set_page_config(layout="wide")
 st.title("💼 Employee Salary Prediction Dashboard")
@@ -170,3 +172,33 @@ if predict_btn:
     for i, (name, result) in enumerate(model_results.items()):
         pred_salary = result['Model'].predict(input_df)[0]
         cols[i].metric(label=name, value=f"${pred_salary:,.0f}")
+
+
+# ── GenAI Explanation ─────────────────────────────────────────────────────────
+st.write("### 🤖 AI Explanation")
+
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+gemini = genai.GenerativeModel("gemini-1.5-flash")
+
+prompt = f"""
+A salary prediction model estimated a salary of ${best_pred:,.0f} for an employee with:
+- Age: {age}
+- Gender: {gender}
+- Education: {education}
+- Years of Experience: {experience}
+- Job Title: {job_input}
+
+In 3-4 sentences, explain in plain English why this salary makes sense.
+Reference which factors (experience, education, job title) likely drove this result
+and how it compares to typical market compensation. Be professional and concise.
+"""
+
+with st.spinner("Generating explanation..."):
+    response = gemini.generate_content(prompt)
+    st.info(response.text)
+
+
+
+
+
+
