@@ -1,17 +1,24 @@
-# 💼 Employee Salary Prediction — ML Dashboard
+# 💼 Employee Salary Prediction — ML + GenAI Dashboard
 
-An end-to-end machine learning project that predicts employee salaries based on demographic and professional attributes. Built as part of the **AICTE–IBM Edunet AI/ML Internship (2025)**.
+An end-to-end machine learning project that predicts employee salaries based on demographic and professional attributes, with an integrated **Generative AI explanation layer** powered by Google Gemini. Built as part of the **AICTE–IBM Edunet AI/ML Internship (2025)**.
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue?logo=python)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)](https://streamlit.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Live%20App-red?logo=streamlit)](https://navyabehl-employee-salary-prediction.streamlit.app/)
+[![Gemini](https://img.shields.io/badge/Google%20Gemini-GenAI-orange?logo=google)](https://aistudio.google.com/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikit-learn)](https://scikit-learn.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
+## 🚀 Live Demo
+
+**[▶ Try the app here](https://navyabehl-employee-salary-prediction.streamlit.app/)**
+
+---
+
 ## 📌 Project Overview
 
-This project analyzes a dataset of 10,000+ employee records to build and compare predictive models for compensation benchmarking. The interactive Streamlit dashboard allows users to input their profile and receive real-time salary predictions, along with data-driven visualizations explaining what drives compensation.
+This project analyzes a dataset of 10,000+ employee records to build and compare predictive models for compensation benchmarking. The interactive Streamlit dashboard allows users to input their profile and receive real-time salary predictions across three ML models, along with a **plain-English AI explanation** of what drives their predicted compensation — powered by Google Gemini 2.0 Flash.
 
 **Key Result:** Random Forest model achieved **R² = 0.97**, reducing prediction error margins by 35% over baseline.
 
@@ -24,6 +31,7 @@ This project analyzes a dataset of 10,000+ employee records to build and compare
 - **Multi-Model Comparison** — Linear Regression, Decision Tree, and Random Forest evaluated side-by-side
 - **Interactive Prediction** — Input age, gender, education, experience, and job title to get instant salary estimates
 - **Feature Importance** — Visual breakdown of which factors most influence salary predictions
+- **GenAI Explanation Layer** — Google Gemini 2.0 Flash generates a natural language explanation of each prediction, improving model interpretability for non-technical users
 
 ---
 
@@ -50,6 +58,7 @@ employee-salary-prediction-ml/
 | Data Processing | pandas, numpy |
 | Visualization | matplotlib, seaborn |
 | Web App | Streamlit |
+| Generative AI | Google Gemini 2.0 Flash |
 
 ---
 
@@ -62,6 +71,15 @@ employee-salary-prediction-ml/
 | **Random Forest** | **0.97** | **Lowest** | **Lowest** |
 
 > Random Forest was selected as the primary prediction model due to its superior accuracy and robustness to overfitting.
+
+---
+
+## 🤖 GenAI Integration
+
+After generating salary predictions, the app calls the **Google Gemini 2.0 Flash** API to produce a concise, plain-English explanation of the predicted salary. This addresses a key challenge in ML deployment — **model explainability** — by translating numerical outputs into human-readable insights for non-technical stakeholders.
+
+Example output:
+> *"With 10 years of experience as a Data Scientist and a Master's degree, a salary of $120,000 aligns well with market benchmarks. Experience is the strongest driver here, contributing significantly more than education level alone..."*
 
 ---
 
@@ -78,7 +96,11 @@ pip install -r requirements.txt
 # 3. Add your dataset
 # Place Salary_Data.csv in the project root directory
 
-# 4. Launch the app
+# 4. Set up your Gemini API key
+# Create a .streamlit/secrets.toml file with:
+# GEMINI_API_KEY = "your-key-here"
+
+# 5. Launch the app
 streamlit run app.py
 ```
 
@@ -119,4 +141,4 @@ M.Sc. Economics | Dr. B.R. Ambedkar School of Economics University, Bengaluru
 
 ## 🏷️ Tags
 
-`machine-learning` `salary-prediction` `streamlit` `random-forest` `scikit-learn` `python` `data-science` `HR-analytics` `compensation-benchmarking`
+`machine-learning` `salary-prediction` `streamlit` `random-forest` `scikit-learn` `python` `data-science` `HR-analytics` `compensation-benchmarking` `generative-ai` `google-gemini` `model-explainability`
