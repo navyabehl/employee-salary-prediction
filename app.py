@@ -85,7 +85,10 @@ model_results, X, x_test, y_test = train_models(df)
 
 # ── Step 1: Dataset Preview ───────────────────────────────────────────────────
 st.subheader("Step 1: Dataset Preview")
-st.write(df[['Age', 'Gender', 'Education Level', 'Years of Experience', 'Salary']].head())
+preview_df = df[['Age', 'Gender', 'Education Level', 'Years of Experience', 'Salary']].head().copy()
+preview_df['Gender'] = preview_df['Gender'].map(dict(enumerate(le.classes_)))
+preview_df['Education Level'] = preview_df['Education Level'].map({v: k for k, v in edu_mapping.items()})
+st.write(preview_df)
 st.caption(f"Dataset shape: {df.shape[0]} rows × {df.shape[1]} columns")
 
 # ── Step 2: Model Evaluation ──────────────────────────────────────────────────
