@@ -192,7 +192,7 @@ if predict_btn:
     and how it compares to typical market compensation. Be professional and concise.
     """
 
-        with st.spinner("Generating explanation..."):
+    with st.spinner("Generating explanation..."):
         try:
             response = gemini.generate_content(prompt)
             st.info(response.text)
