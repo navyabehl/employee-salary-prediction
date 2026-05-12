@@ -192,12 +192,12 @@ if predict_btn:
     and how it compares to typical market compensation. Be professional and concise.
     """
 
-    with st.spinner("Generating explanation..."):
-    try:
-        response = gemini.generate_content(prompt)
-        st.info(response.text)
-    except Exception as e:
-        st.warning("⚠️ AI explanation unavailable right now — free tier limit reached. Please wait a minute and try again.")
+        with st.spinner("Generating explanation..."):
+        try:
+            response = gemini.generate_content(prompt)
+            st.info(response.text)
+        except Exception as e:
+            st.warning("⚠️ AI explanation unavailable right now — free tier limit reached. Please wait a minute and try again.")
 
 
 
